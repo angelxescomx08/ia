@@ -19,5 +19,20 @@ y = dataset.iloc[:,3].values
 from sklearn.impute import SimpleImputer
 #Objeto para reemplazar valores indefinidos(Valores a reemplazar,forma de remplazarlos(media), filas o columnas(columnas))
 imputer = SimpleImputer(missing_values = np.nan, strategy = "mean", verbose = 0) 
-imputer.fit(X[:,1:3])
-X[:,1:3] = imputer.transform(X[:,1:3])
+imputer.fit(X[:,1:3])#aplica los cambios al imputer
+X[:,1:3] = imputer.transform(X[:,1:3])#sustituye los cambios
+
+#codificar datos categoricos (convertir las letras a numeros)
+from sklearn import preprocessing
+le_X = preprocessing.LabelEncoder()
+X[:,0] = le_X.fit_transform(X[:,0])#transformar categorias a número y asignarlas a la matriz
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+ 
+ct = ColumnTransformer(
+    [('one_hot_encoder', OneHotEncoder(categories='auto'), [0])],   
+    remainder='passthrough'                        
+)
+X = np.array(ct.fit_transform(X), dtype=np.float64)
+le_y = preprocessing.LabelEncoder()
+y = le_y.fit_transform(y)
