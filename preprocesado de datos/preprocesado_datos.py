@@ -36,3 +36,7 @@ ct = ColumnTransformer(
 X = np.array(ct.fit_transform(X), dtype=np.float64)
 le_y = preprocessing.LabelEncoder()
 y = le_y.fit_transform(y)
+
+#Dividir el dataset en un conjunto de entrenamiento y un conjunto de testing
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0) #Entradas,salidas, tamaño del test, semilla para que salgan los mismos datos
